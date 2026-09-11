@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static('public'));
 
-const dbURI = 'mongodb+srv://register79:Anuragkr67@vidhiora.6b0opee.mongodb.net/?appName=Vidhiora';
+const dbURI = 'mongodb+srv://anuragff561_db_user:sRWhwGeFBTH33fby@cluster0.yphjde4.mongodb.net/?appName=Cluster0';
 
 mongoose.connect(dbURI)
     .then(() => console.log('✅ Securely Connected to MongoDB Atlas'))
