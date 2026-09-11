@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Admin Dashboard</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f7f6; padding: 25px; }
+        .container { max-width: 1050px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); }
+        h2 { color: #0f172a; margin-bottom: 5px; }
+        p { color: #64748b; font-size: 13px; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+        th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { background-color: #f8fafc; color: #475569; font-weight: 600; }
+        .status-pending { color: #d9534f; font-weight: bold; }
+        .status-confirmed { color: #10b981; font-weight: bold; }
+        .approve-btn { background-color: #2563eb; color: white; border: none; padding: 7px 12px; border-radius: 4px; cursor: pointer; font-weight: 600; }
+        .approve-btn:hover { background-color: #1d4ed8; }
+        .approve-btn:disabled { background-color: #cbd5e1; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Registration Control Panel</h2>
+        <p>Review submitted payment references (UTR) against bank statements and approve registrations.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Registrant Profile</th>
+                    <th>Institution & City</th>
+                    <th>UTR Reference</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+    <script>
+        async function loadUsers() {
+            try {
+                const res = await fetch('/api/admin/users');
+                const users = await res.json();
+                const tbody = document.getElementById('tableBody');
+                tbody.innerHTML = '';
+                
+                users.forEach(user => {
+                    const tr = document.createElement('tr');
+                    const isPending = user.status === 'Pending Verification';
+                    tr.innerHTML = `
+                        <td><strong>#${user.registrationNumber || '-'}</strong></td>
+                        <td>${user.fullName}<br><small style="color:#64748b">${user.email}<br>${user.phone}</small></td>
+                        <td>${user.college}<br><small style="color:#64748b">${user.city} (${user.course})</small></td>
+                        <td><code style="background:#f1f5f9; padding:2px 6px; border-radius:4px;">${user.transactionId}</code></td>
+                        <td class="${isPending ? 'status-pending' : 'status-confirmed'}">${user.status}</td>
+                        <td>${isPending ? `<button class="approve-btn" onclick="approveUser('${user._id}')">Approve</button>` : `<button class="approve-btn" disabled>Approved ✓</button>`}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (err) {
+                console.error("Failed to load records");
+            }
+        }
+
+        async function approveUser(id) {
+            if(confirm("Confirm payment validation?")) {
+                const res = await fetch(`/api/admin/approve/${id}`, { method: 'POST' });
+                const result = await res.json();
+                if(result.success) {
+                    loadUsers();
+                } else {
+                    alert("Approval protocol execution failed.");
+                }
+            }
+        }
+        loadUsers();
+    </script>
+</body>
+</html>

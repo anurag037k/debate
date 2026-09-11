@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Event Registration</title>
+    <style>
+        :root { --primary: #0f172a; --accent: #2563eb; --bg-color: #f8fafc; --card-bg: #ffffff; --border: #e2e8f0; --text-main: #334155; --text-muted: #64748b; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 40px 20px; }
+        .dashboard-container { background-color: var(--card-bg); width: 100%; max-width: 600px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06); overflow: hidden; border: 1px solid var(--border); }
+        .early-bird-banner { background: linear-gradient(135deg, #ff7e5f, #feb47b); color: #fff; padding: 30px 20px; text-align: center; transition: background 0.5s ease; }
+        .early-bird-banner h2 { font-size: 24px; font-weight: 800; margin-bottom: 6px; }
+        .badge { display: inline-block; background-color: #ffffff; color: #ff7e5f; font-size: 11px; font-weight: 800; padding: 5px 12px; border-radius: 20px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .upcoming-slabs { display: flex; background-color: #fdfdfd; border-bottom: 1px solid var(--border); }
+        .slab { flex: 1; text-align: center; padding: 14px; }
+        .slab:first-child { border-right: 1px solid var(--border); }
+        .slab-title { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
+        .slab-price { font-size: 16px; color: var(--text-main); font-weight: 700; }
+        .pricing-note { font-size: 12px; color: var(--text-muted); text-align: center; padding: 14px 20px; background-color: #f8fafc; font-style: italic; border-bottom: 1px solid var(--border); }
+        .payment-instructions { margin: 25px; padding: 20px; background-color: #f0fdf4; border: 1px dashed #22c55e; border-radius: 8px; text-align: center; }
+        .qr-code-img { width: 150px; height: 150px; margin: 12px auto; border-radius: 6px; border: 3px solid #ffffff; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: block; }
+        .upi-id { font-size: 16px; font-weight: 700; color: #15803d; margin: 8px 0; user-select: all; padding: 8px 12px; background: #dcfce7; border-radius: 6px; display: inline-block; }
+        .form-section { padding: 0 25px 30px 25px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: var(--primary); }
+        .form-group input, .form-group select { width: 100%; padding: 11px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; background: #fff; color: var(--text-main); }
+        .form-group input:focus, .form-group select:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12); }
+        .two-col { display: flex; gap: 15px; }
+        .two-col .form-group { flex: 1; }
+        .submit-btn { width: 100%; padding: 15px; background-color: var(--accent); color: white; border: none; border-radius: 6px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 10px; transition: background-color 0.2s; }
+        .submit-btn:hover { background-color: #1d4ed8; }
+        .submit-btn:disabled { background-color: #94a3b8; cursor: not-allowed; }
+        .success-page { display: none; text-align: center; padding: 50px 30px; }
+        .success-page h1 { color: #10b981; font-size: 28px; margin-bottom: 8px; }
+        .registration-number-box { background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid var(--border); }
+        .whatsapp-btn { display: inline-block; background-color: #25D366; color: white; padding: 14px 26px; border-radius: 6px; text-decoration: none; font-weight: 700; font-size: 15px; margin-top: 10px; transition: transform 0.2s; }
+        .whatsapp-btn:hover { transform: translateY(-1px); }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div id="formView">
+            <div class="early-bird-banner" id="pricingBanner">
+                <div class="badge" id="bannerBadge">🔥 Fast Filling</div>
+                <h2 id="bannerTitle">EARLY BIRD OFFER — ₹79</h2>
+                <p id="bannerSubtitle">🎟️ Only for the first 10 confirmed registrations.</p>
+            </div>
+            <div class="upcoming-slabs">
+                <div class="slab"><div class="slab-title">Regular Window</div><div class="slab-price">₹99</div></div>
+                <div class="slab"><div class="slab-title">Final Window</div><div class="slab-price">₹129</div></div>
+            </div>
+            <div class="pricing-note">*Note: Fee automatically switches to the next pricing tier once threshold limits are reached.</div>
+            
+            <div class="payment-instructions">
+                <h3>💳 Step 1: Scan & Complete Payment</h3>
+                <p style="font-size: 13px; color: #166534;">Pay exact amount (<span id="instructionPrice"><strong>₹79</strong></span>) using any UPI application.</p>
+                <!-- QR Code automatically built with pre-filled amount parameter for swapnilchauhan100@oksbi -->
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=swapnilchauhan100@oksbi%26am=79%26cu=INR" alt="Dynamic UPI QR Code" class="qr-code-img">
+                <div class="upi-id">swapnilchauhan100@oksbi</div>
+            </div>
+
+            <div class="form-section">
+                <form id="registrationForm">
+                    <div class="form-group"><label>Full Name</label><input type="text" name="fullName" placeholder="John Doe" required></div>
+                    <div class="two-col">
+                        <div class="form-group"><label>Email Address</label><input type="email" name="email" placeholder="name@domain.com" required></div>
+                        <div class="form-group"><label>Phone Number</label><input type="tel" name="phone" pattern="[0-9]{10,15}" placeholder="10-digit mobile" required></div>
+                    </div>
+                    <div class="form-group"><label>College / Organisation</label><input type="text" name="college" placeholder="Institution Name" required></div>
+                    <div class="two-col">
+                        <div class="form-group"><label>Qualification</label><select name="qualification" required><option value="" disabled selected>Select...</option><option value="undergraduate">Undergraduate</option><option value="postgraduate">Postgraduate</option><option value="other">Other</option></select></div>
+                        <div class="form-group"><label>Course & Year</label><input type="text" name="course" placeholder="e.g. B.Tech, 3rd Year" required></div>
+                    </div>
+                    <div class="form-group"><label>City</label><input type="text" name="city" placeholder="Current City" required></div>
+                    <div class="form-group"><label>UPI Transaction ID (UTR Number)</label><input type="text" name="transactionId" placeholder="12-digit reference number" minlength="12" maxlength="12" required></div>
+                    <button type="submit" class="submit-btn" id="submitBtn">Submit Registration Details</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="success-page" id="successPage">
+            <h1>🎉 Congratulations!</h1>
+            <p style="color: var(--text-muted); font-size: 14px;">Your registration data and transaction reference have been securely recorded.</p>
+            <div class="registration-number-box">
+                <p style="font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Assigned Position</p>
+                <h2 style="color: var(--primary); font-size: 24px; margin-top: 4px;">Attendee #<span id="displayRegNumber">...</span></h2>
+            </div>
+            <h3 style="color: var(--primary); font-size: 15px; margin-bottom: 6px;">Step 2: Join the Event Community</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Connect with peers and get announcements directly via WhatsApp:</p>
+            <a href="https://chat.whatsapp.com/G0yZ0ntiDnIJx6Ewo2W7FK" target="_blank" class="whatsapp-btn">💬 Join Official WhatsApp Group</a>
+        </div>
+    </div>
+
+    <script>
+        async function checkPricingSlabs() {
+            try {
+                const res = await fetch('/api/registration-count');
+                const data = await res.json();
+                const qrImage = document.querySelector('.qr-code-img');
+                const upiId = "swapnilchauhan100@oksbi";
+
+                if (data.count >= 50) {
+                    document.getElementById('pricingBanner').style.background = "linear-gradient(135deg, #9333ea, #f43f5e)";
+                    document.getElementById('bannerTitle').innerText = "FINAL PHASE — ₹129";
+                    document.getElementById('instructionPrice').innerHTML = "<strong>₹129</strong>";
+                    qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=${upiId}%26am=129%26cu=INR`;
+                } else if (data.count >= 10) {
+                    document.getElementById('pricingBanner').style.background = "linear-gradient(135deg, #2563eb, #60a5fa)";
+                    document.getElementById('bannerTitle').innerText = "REGULAR PHASE — ₹99";
+                    document.getElementById('instructionPrice').innerHTML = "<strong>₹99</strong>";
+                    qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=${upiId}%26am=99%26cu=INR`;
+                }
+            } catch (e) {}
+        }
+        checkPricingSlabs();
+
+        document.getElementById('registrationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true; 
+            btn.innerText = "Securing Submission...";
+            
+            const data = Object.fromEntries(new FormData(e.target).entries());
+            try {
+                const res = await fetch('/api/register', { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify(data) 
+                });
+                const result = await res.json();
+                if (result.success) {
+                    document.getElementById('formView').style.display = 'none';
+                    document.getElementById('successPage').style.display = 'block';
+                    document.getElementById('displayRegNumber').innerText = result.registrationNumber;
+                } else { 
+                    alert("Validation or submission failed. Please verify fields."); 
+                    btn.disabled = false; 
+                    btn.innerText = "Submit Registration Details"; 
+                }
+            } catch (err) { 
+                alert("Network communication failure. Try again."); 
+                btn.disabled = false; 
+                btn.innerText = "Submit Registration Details"; 
+            }
+        });
+    </script>
+</body>
+</html>
