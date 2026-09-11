@@ -10,9 +10,10 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static('public'));
 
-const dbURI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/event_database';
+const dbURI = 'mongodb+srv://register79:Anuragkr67@vidhiora.6b0opee.mongodb.net/?appName=Vidhiora';
+
 mongoose.connect(dbURI)
-    .then(() => console.log('✅ Connected to MongoDB'))
+    .then(() => console.log('✅ Securely Connected to MongoDB Atlas'))
     .catch(err => console.error('❌ Database Connection Error:', err));
 
 const userSchema = new mongoose.Schema({
